@@ -13,11 +13,15 @@ export default function Home() {
     const [emptyField, setEmptyField] = useState(false);
     const [errorField, setErrorField] = useState("");
     const [notFound, setNotFound] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const submitForm = async() => {
+        setSuccess(false)
+        console.log(guestName, studentInfo);
         setGuestResult([])
         setStudentResult([])
         if((studentInfo === "" && guestName !== "")){
+            console.log("true")
             setEmptyField(false)
             const data = await fetch("http://localhost:5000/signin", {
                 method:"POST",
@@ -33,7 +37,9 @@ export default function Home() {
             setGuestResult(response)
         }
         else if ((studentInfo !== "" && guestName === "")){
+            console.log("true")
             setEmptyField(false)
+            
             const data = await fetch("http://localhost:5000/signin", {
                 method:"POST",
                 headers: {
@@ -44,12 +50,16 @@ export default function Home() {
                 body: JSON.stringify({type: "student", info: studentInfo})
             });            
             const response = await data.json();
+            console.log(response)
+            console.log(data.status)
             if(data.status === 200){
-                setStudentResult(response.filter((obj) => obj.ischeckedin === false));
-                if(studentResult.length === 0){
+                setErrorField("")
+                console.log(response)
+                if(response.length === 0){
                     setNotFound(true)
                 }
                 else{
+                    setStudentResult(response)
                     setNotFound(false)
                 }
                 
@@ -67,7 +77,7 @@ export default function Home() {
     }
 
 
-    const signin = async(id) => {
+    const signin = async(id,type) => {
         const data = await fetch("http://localhost:5000/signinStudent", {
             method:"POST",
             headers: {
@@ -75,10 +85,16 @@ export default function Home() {
             },
             redirect: 'follow',
             credentials: 'include',
-            body: JSON.stringify({id: id})
+            body: JSON.stringify({id: id,type:type})
         });        
         const response = await data.json();
         console.log(response)
+        if(data.status === 200){
+            setSuccess(true)
+        }
+        else{
+            setSuccess(false)
+        }
     }
 
     return (
@@ -92,6 +108,9 @@ export default function Home() {
             <div class= {emptyField ? "container alert alert-danger": "visually-hidden"} role="alert">
                 Please enter only 1 field at a time! Make sure one is empty and the other is filled.
             </div>
+            <div class= {success ? "container alert alert-primary": "visually-hidden"} role="alert">
+                successfully signed in! You can signin someone else now!
+            </div>
             <div class= {errorField !== "" ? "container alert alert-danger": "visually-hidden"} role="alert">
                 {errorField}
             </div>
@@ -102,27 +121,29 @@ export default function Home() {
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Name or student ID number, but not both</Form.Label>
                         
-                        <Form.Control type="email" placeholder="Name or student ID number" onChange = {(e) => setStudentInfo(e.target.value)}/>
+                        <Form.Control type="email" placeholder="Name or student ID number" value = {studentInfo} onChange = {(e) => setStudentInfo(e.target.value)}/>
                         <div class = "mt-2">
                             <Button onClick = {()=>submitForm()}>Get students</Button>
                         </div>
                     </Form.Group>
                 </Form>
-
-                {studentResult.length > 0 && studentResult.map((result) => {
-                    return(
-                        
-
-                            <div class="w-25 border">                   
-                                <div class="card-body">
-                                    <p>Name: {result.name}</p>
-                                    <p>ID: {result.studentid}</p>
-                                    <Button class = "btn btn-dark" onClick = {(e)=> signin(result.studentid)}>Signin</Button>
-                                </div> 
-                        </div>
-                    )
-                })
-                }
+                <div class = "d-flex">
+                    {studentResult.length > 0 && studentResult.map((result) => {
+                        const bgColor = result.ischeckedin ? "bg-secondary card mx-1" : "card mx-1"
+                        const buttonColor = result.ischeckedin ? "btn bg-primary" : "btn bg-primary"
+                        return(
+                                <div class= {bgColor} >                   
+                                    <div class="card-body">
+                                        {result.ischeckedin && <p class = "text-warning">Alreay signed in!</p>}
+                                        <p>Name: {result.name}</p>
+                                        <p>ID: {result.studentid}</p>
+                                        <Button class = {buttonColor} onClick = {(e)=> signin(result.studentid, "students")}>Signin</Button>
+                                    </div> 
+                            </div>
+                        )
+                    })
+                    }
+                </div>
                 {notFound && 
                 <div class="container alert alert-danger" role="alert">
                     No students found!    
@@ -135,24 +156,29 @@ export default function Home() {
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Guest name</Form.Label>
-                        <Form.Control type="email" placeholder="Guest Name" onChange = {(e) => setGuestName(e.target.value)}/>
+                        <Form.Control type="email" placeholder="Guest Name Or Phone Number. If you are entering phone number enter this format: 123456789. Without any space!" value = {guestName} onChange = {(e) => setGuestName(e.target.value)}/>
                         <div class = "mt-2">
                             <Button onClick = {()=>submitForm()}>Get guests</Button>
                         </div>
                     </Form.Group>
                     
                 </Form>
-
-                {guestResult.length > 0 && guestResult.map((result) => {
-                    return(
-                    <div class="card">
-                        <div class="card-body d-flex">
-                            <p>{result.name}</p>
-                            <p class = "ms-2">{result.verificationcode}</p>
+                <div class = 'd-flex'>
+                    {console.log(typeof guestResult)}
+                    {(guestResult.length > 0 && typeof guestResult === "object") && guestResult.map((result) => {
+                        const bgColor = result.ischeckedin ? "bg-secondary card mx-1" : "card mx-1"
+                        const buttonColor = result.ischeckedin ? "btn bg-primary" : "btn bg-primary"
+                        return(
+                        <div class = {bgColor} key = {result.id}>
+                            <div class="card-body">
+                                <p>{result.name}</p>
+                                <p>{result.verificationcode}</p>
+                                <Button class = {buttonColor} onClick = {(e)=> signin(result.verificationcode, "guests")}>Signin</Button>
+                            </div>
                         </div>
-                    </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
 
             </div>
         </div>
