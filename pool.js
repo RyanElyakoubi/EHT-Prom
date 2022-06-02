@@ -20,7 +20,7 @@ const proConfig = {
       }
 }
 
-const pool = new Pool (devSettings);
+const pool = new Pool (proConfig);
 
 
 module.exports = pool;

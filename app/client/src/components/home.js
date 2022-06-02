@@ -40,7 +40,7 @@ export default function Home() {
             console.log("true")
             setEmptyField(false)
             
-            const data = await fetch("http://localhost:5000/signin", {
+            const data = await fetch("/signin", {
                 method:"POST",
                 headers: {
                   'Content-Type': 'application/json'
@@ -78,7 +78,7 @@ export default function Home() {
 
 
     const signin = async(id,type) => {
-        const data = await fetch("http://localhost:5000/signinStudent", {
+        const data = await fetch("/signinStudent", {
             method:"POST",
             headers: {
               'Content-Type': 'application/json'
