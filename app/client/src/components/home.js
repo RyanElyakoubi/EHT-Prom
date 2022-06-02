@@ -155,7 +155,7 @@ export default function Home() {
                 <h3 class = "text-center">Guests</h3>
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Guest name</Form.Label>
+                        <Form.Label>Guest Phone Number</Form.Label>
                         <Form.Control type="email" placeholder="Guest Name Or Phone Number. If you are entering phone number enter this format: 123456789. Without any space!" value = {guestName} onChange = {(e) => setGuestName(e.target.value)}/>
                         <div class = "mt-2">
                             <Button onClick = {()=>submitForm()}>Get guests</Button>
