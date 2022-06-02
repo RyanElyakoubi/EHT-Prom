@@ -23,7 +23,7 @@ export default function Home() {
         if((studentInfo === "" && guestName !== "")){
             console.log("true")
             setEmptyField(false)
-            const data = await fetch("http://localhost:5000/signin", {
+            const data = await fetch("/signin", {
                 method:"POST",
                 headers: {
                   'Content-Type': 'application/json'
