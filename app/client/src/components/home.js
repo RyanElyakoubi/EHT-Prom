@@ -153,7 +153,7 @@ export default function Home() {
                                         {result.ischeckedin && <p class = "text-warning">Alreay signed in!</p>}
                                         <p>Name: {result.name}</p>
                                         <p>ID: {result.studentid}</p>
-                                        <Button class = {buttonColor} onClick = {(e)=> signin(result.studentid, "students")}>Signin</Button>
+                                        <Button class = {buttonColor} onClick = {(e)=> signin(result.studentid, "students")}>Sign in</Button>
                                     </div> 
                             </div>
                         )
@@ -189,7 +189,7 @@ export default function Home() {
                             <div class="card-body">
                                 <p>{result.name}</p>
                                 <p>{result.verificationcode}</p>
-                                <Button class = {buttonColor} onClick = {(e)=> signin(result.verificationcode, "guests")}>Signin</Button>
+                                <Button class = {buttonColor} onClick = {(e)=> signin(result.verificationcode, "guests")}>Sign in</Button>
                             </div>
                         </div>
                         )
