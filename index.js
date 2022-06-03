@@ -38,7 +38,7 @@ app.get('/howManyPeople', (req, res) => {
     try {
         const data1 = pool.query("SELECT * FROM students WHERE ischeckedin = true");
         const data2 = pool.query("SELECT * FROM guests WHERE ischeckedin = true");
-        const sum = data.rowCount + data2.rowCount;
+        const sum = data1.rowCount + data2.rowCount;
         res.json(sum);
     } catch (error) {
         res.status(500).json("error")
