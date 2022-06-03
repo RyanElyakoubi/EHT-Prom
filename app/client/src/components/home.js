@@ -133,7 +133,7 @@ export default function Home() {
 
 
             <div class = "container mt-2">
-                <h4>{peopleCount} people checked in</h4>
+                <h4>{peopleCount} person checked in</h4>
             </div>
             <div class = "container mt-5">
                 <h3 class = "text-center">Students</h3>
