@@ -33,6 +33,18 @@ app.use((req, res, next) => {
 const checkIfNum = (str) => {
     return /^\d+$/.test(str);
 }
+
+app.get('/howManyPeople', (req, res) => {
+    try {
+        const data1 = pool.query("SELECT * FROM students WHERE ischeckedin = false");
+        const data2 = pool.query("SELECT * FROM guests WHERE ischeckedin = false");
+        const sum = data.rowCount + data2.rowCount;
+        res.json(sum);
+    } catch (error) {
+        res.status(500).json("error")
+    }
+});
+
 app.post("/signin",  (req, res) => {
     const {type, info} = req.body;
     if(type === "student"){

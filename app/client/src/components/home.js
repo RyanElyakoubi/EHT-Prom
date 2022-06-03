@@ -14,7 +14,19 @@ export default function Home() {
     const [errorField, setErrorField] = useState("");
     const [notFound, setNotFound] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [peopleCount, setPeopleCount] = useState();
 
+
+    const fetchData = async () => {
+        const data = await fetch("/howManyPeople");
+        const response = await data.json();
+        setPeopleCount(response);
+    }
+
+    useEffect(() => {
+        fetchData()
+
+    },[])
     const submitForm = async() => {
         setSuccess(false)
         console.log(guestName, studentInfo);
@@ -115,6 +127,10 @@ export default function Home() {
                 {errorField}
             </div>
 
+
+            <div class = "container mt-2">
+                <h4>{peopleCount}/870 people signed in</h4>
+            </div>
             <div class = "container mt-5">
                 <h3 class = "text-center">Students</h3>
                 <Form>
@@ -156,7 +172,7 @@ export default function Home() {
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Guest Phone Number</Form.Label>
-                        <Form.Control type="email" placeholder="Guest Name Or Phone Number. If you are entering phone number enter this format: 123456789. Without any space!" value = {guestName} onChange = {(e) => setGuestName(e.target.value)}/>
+                        <Form.Control type="email" placeholder="Guest Name Or Phone Number. If you are entering phone number enter this format: 123456789 Without any space!" value = {guestName} onChange = {(e) => setGuestName(e.target.value)}/>
                         <div class = "mt-2">
                             <Button onClick = {()=>submitForm()}>Get guests</Button>
                         </div>
