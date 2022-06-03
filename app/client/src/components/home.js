@@ -17,6 +17,7 @@ export default function Home() {
     const [peopleCount, setPeopleCount] = useState();
 
 
+
     const fetchData = async () => {
         const data = await fetch("/howManyPeople");
         const response = await data.json();
@@ -25,8 +26,7 @@ export default function Home() {
 
     useEffect(() => {
         fetchData()
-
-    },[])
+    },[guestResult, studentResult])
     const submitForm = async() => {
         setSuccess(false)
         console.log(guestName, studentInfo);
@@ -103,6 +103,7 @@ export default function Home() {
         console.log(response)
         if(data.status === 200){
             setSuccess(true)
+            fetchData()
         }
         else{
             setSuccess(false)
@@ -129,7 +130,7 @@ export default function Home() {
 
 
             <div class = "container mt-2">
-                <h4>{peopleCount}/870 people signed in</h4>
+                <h4>{peopleCount}/870 people checked in</h4>
             </div>
             <div class = "container mt-5">
                 <h3 class = "text-center">Students</h3>

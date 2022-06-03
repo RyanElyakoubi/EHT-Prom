@@ -34,10 +34,11 @@ const checkIfNum = (str) => {
     return /^\d+$/.test(str);
 }
 
-app.get('/howManyPeople', (req, res) => {
+app.get('/howManyPeople', async(req, res) => {
     try {
-        const data1 = pool.query("SELECT * FROM students WHERE ischeckedin = true");
-        const data2 = pool.query("SELECT * FROM guests WHERE ischeckedin = true");
+        const data1 = await pool.query("SELECT * FROM students WHERE ischeckedin = true");
+        const data2 = await pool.query("SELECT * FROM guests WHERE ischeckedin = true");
+        console.log(data1)
         const sum = data1.rowCount + data2.rowCount;
         res.json(sum);
     } catch (error) {
