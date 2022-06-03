@@ -122,7 +122,7 @@ export default function Home() {
                 Please enter only 1 field at a time! Make sure one is empty and the other is filled.
             </div>
             <div class= {success ? "container alert alert-primary": "visually-hidden"} role="alert">
-                successfully signed in! You can signin someone else now!
+                successfully signed in! You can sign in someone else now!
             </div>
             <div class= {errorField !== "" ? "container alert alert-danger": "visually-hidden"} role="alert">
                 {errorField}
