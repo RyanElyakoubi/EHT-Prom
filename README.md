@@ -1,0 +1,2 @@
+# EHT-Prom
+Created a digital check-in website with two other developers for Prom to cut wait times down by half and to obtain the highest level of safety. Was a huge success and successfully checked in 800+ people. I am currently in contact with over 8 schools in the county to expand and was the first student to ever create a digital check-in software for prom. Hopefully my software will become the standard for Prom check-in for all proms in Atlantic county as pen and paper is not nearly as inefficient !
